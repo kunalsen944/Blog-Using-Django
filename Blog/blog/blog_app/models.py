@@ -10,7 +10,7 @@ class Post(models.Model):
     author=models.ForeignKey(User,on_delete=models.CASCADE,blank=True)
     category=models.CharField(max_length=50,default='blog')
     title = models.CharField(max_length=200)
-    text = models.TextField()
+    text = models.CharField(max_length=20000)
     image=models.ImageField(upload_to='post_image',default='blog.png')
     date=models.DateTimeField(default=timezone.now)
 

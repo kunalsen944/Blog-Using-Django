@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'markdown_deux',
+    'pagedown',
     'crispy_forms',
     'django.contrib.sessions',
     'django.contrib.messages',
