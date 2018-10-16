@@ -6,12 +6,16 @@ from blog_app.models import Post
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 # Create your views here.
 
 
 def home(request):
     postlist=Post.objects.all().order_by('-date')
-    mydict={'POSTLIST':postlist}
+    paginator = Paginator(postlist, 3)
+    page = request.GET.get('page')
+    contacts = paginator.get_page(page)
+    mydict={'contacts': contacts}
     return render(request,'blog_app/home.html',context=mydict)
 
 @login_required(login_url='login')
@@ -53,6 +57,9 @@ def updatepost(request,id):
         mydict={'U_FORM':u_form}
         return render(request,'blog_app/updatepost.html',context=mydict)
 
+def detailview(request,id):
+    post=Post.objects.get(id=id)
+    return render(request,'blog_app/detailview.html',{'post':post})
 
 @login_required
 def deletepost(request,id):

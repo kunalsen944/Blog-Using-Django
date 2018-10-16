@@ -1,0 +1,23 @@
+{% extends "blog_app/base.html" %}
+{% load markdown_deux_tags %}
+{% block content %}
+        <article class="media content-section">
+          <div class="media">
+            {%if post.image%}
+            <img class="rounded-circle account-img" src="{{ post.image.url }}">
+            {%endif%}
+          <div class="media-body ">
+            <div class="article-metadata">
+              <a class="mr-2">{{ post.author }}</a>
+              <small class="text-muted">{{ post.date }}</small>
+            </div>
+            <h2><a class="article-title">{{ post.title }}</a></h2>
+            <p class="article-content">{{ post.text| markdown }}</p>
+            {%if request.user.is_authenticated is True%}
+            <a href="deletepost/{{post.id}}" onclick="return confirm('Do You Want to Delete {{post.title}}')" class="btn btn-danger">Delete</a>
+            <a href="updatepost/{{post.id}}"  class="btn btn-primary">Update</a>
+            {%endif%}
+          </div>
+        </div>
+        </article>
+{% endblock content %}
