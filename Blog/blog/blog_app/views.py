@@ -1,12 +1,13 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from blog_app.forms import SignupForm,AddPost,UpdatePost
+from blog_app.forms import AddPost,UpdatePost
 from blog_app.models import Post
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.contrib.auth import authenticate, login
 # Create your views here.
 
 
@@ -38,7 +39,10 @@ def addpost(request):
 def viewpost(request):
     user = request.user
     user_posts = Post.objects.filter(author=request.user).order_by('-date')
-    mydict={'POSTLIST':user_posts}
+    paginator = Paginator(user_posts, 3)
+    page = request.GET.get('page')
+    contacts = paginator.get_page(page)
+    mydict={'contacts': contacts}
     return render(request,'blog_app/viewpost.html',context=mydict)
 
 @login_required
@@ -68,13 +72,18 @@ def deletepost(request,id):
     return render(request,'blog_app/viewpost.html')
 
 def signup(request):
-    if request.method=="GET":
-        sform=SignupForm()
-        return render(request,'blog_app/signup.html',{'sform':sform})
-    if request.method=="POST":
-        sform=SignupForm(request.POST)
-        if sform.is_valid():
-            sform.save()
-            postlist=Post.objects.all().order_by('-id')
-            mydict={'POSTLIST':postlist}
-            return HttpResponseRedirect(reverse('login'))
+    sform=UserCreationForm(request.POST or None)
+    if sform.is_valid():
+        new_user=sform.save()
+        new_user = authenticate(username=sform.cleaned_data['username'],password=sform.cleaned_data['password1'],)
+        login(request, new_user)
+        return HttpResponseRedirect(reverse('blog_app:viewpost'))
+
+    return render(request,'blog_app/signup.html',{'sform':sform})
+    # if request.method=="POST":
+    #     sform=UserCreationForm(request.POST)
+    #     if sform.is_valid():
+    #         sform.save()
+    #         postlist=Post.objects.all().order_by('-id')
+    #         mydict={'POSTLIST':postlist}
+    #         return HttpResponseRedirect(reverse('login'))

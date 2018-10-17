@@ -13,10 +13,7 @@
             </div>
             <h2><a class="article-title">{{ post.title }}</a></h2>
             <p class="article-content">{{ post.text| markdown }}</p>
-            {%if request.user.is_authenticated is True%}
-            <a href="deletepost/{{post.id}}" onclick="return confirm('Do You Want to Delete {{post.title}}')" class="btn btn-danger">Delete</a>
-            <a href="updatepost/{{post.id}}"  class="btn btn-primary">Update</a>
-            {%endif%}
+            
           </div>
         </div>
         </article>
