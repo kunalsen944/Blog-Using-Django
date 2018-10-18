@@ -11,5 +11,6 @@ urlpatterns = [
     path('deletepost/<id>',views.deletepost,name='deletepost'),
     path('viewpost',views.viewpost,name='viewpost'),
     path('updatepost/<id>',views.updatepost,name='updatepost'),
+    path('detail/<id>',views.detailview,name='detailview'),
 
 ]
