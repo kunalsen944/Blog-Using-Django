@@ -1,6 +1,7 @@
 {% extends "blog_app/base.html" %}
 {% load markdown_deux_tags %}
 {% block content %}
+{%if contacts %}
     {% for post in contacts %}
         <article class="media content-section">
           <div class="media">
@@ -35,4 +36,8 @@
   </ul>
 </nav>
 <br>
+
+{%else%}
+<h1>No Post to View</h1>
+{%endif%}
 {% endblock content %}

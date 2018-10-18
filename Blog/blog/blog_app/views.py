@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.contrib.auth import authenticate, login
-# Create your views here.
+
 
 
 def home(request):
@@ -77,13 +77,6 @@ def signup(request):
         new_user=sform.save()
         new_user = authenticate(username=sform.cleaned_data['username'],password=sform.cleaned_data['password1'],)
         login(request, new_user)
-        return HttpResponseRedirect(reverse('blog_app:viewpost'))
+        return HttpResponseRedirect(reverse('blog_app:addpost'))
 
     return render(request,'blog_app/signup.html',{'sform':sform})
-    # if request.method=="POST":
-    #     sform=UserCreationForm(request.POST)
-    #     if sform.is_valid():
-    #         sform.save()
-    #         postlist=Post.objects.all().order_by('-id')
-    #         mydict={'POSTLIST':postlist}
-    #         return HttpResponseRedirect(reverse('login'))
